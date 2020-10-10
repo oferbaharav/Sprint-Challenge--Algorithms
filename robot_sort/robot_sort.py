@@ -9,6 +9,9 @@ class SortingRobot:
         self._light = "OFF"     # The state of the robot's light
         self._time = 0          # A time counter (stretch)
 
+    def __str__(self):
+        return f"list={self._list}\nitem={self._item}\nposition={self._position}\nlight={self._light}\ncompare_item={self.compare_item()}"
+
     def can_move_right(self):
         """
         Returns True if the robot can move right or False if it's
@@ -96,8 +99,29 @@ class SortingRobot:
         """
         Sort the robot's list.
         """
-        # Fill this out
-        pass
+        while not self.light_is_on():
+            self.set_light_on()  # assume it's sorted each time through loop
+            while self.can_move_right():
+                self.swap_item()
+                self.move_right()
+                if self.compare_item() == 1:
+                    self.swap_item()
+                    self.set_light_off()
+                self.move_left()
+                self.swap_item()
+                self.move_right()
+
+            while self.can_move_left():
+                self.swap_item()
+                self.move_left()
+                if self.compare_item() == -1:
+                    self.swap_item()
+                    self.set_light_off()
+                self.move_right()
+                self.swap_item()
+                self.move_left()
+
+        
 
 
 if __name__ == "__main__":
@@ -110,3 +134,22 @@ if __name__ == "__main__":
 
     robot.sort()
     print(robot._list)
+
+#     based on:
+#https://stackabuse.com/sorting-algorithms-in-java/#bubblesort
+
+#     public static void bubbleSort(int[] a) {
+#     boolean sorted = false;
+#     int temp;
+#     while(!sorted) {
+#         sorted = true;
+#         for (int i = 0; i < array.length - 1; i++) {
+#             if (a[i] > a[i+1]) {
+#                 temp = a[i];
+#                 a[i] = a[i+1];
+#                 a[i+1] = temp;
+#                 sorted = false;
+#             }
+#         }
+#     }
+# }
